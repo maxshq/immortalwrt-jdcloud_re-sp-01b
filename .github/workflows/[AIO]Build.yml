@@ -17,7 +17,7 @@ on:
       device_choice:
         description: '选择型号(device-env.sh中的编号)'
         required: false
-        default: 5
+        default: 6
         type: number
       config_tag:
         description: '选择配置的版本(clean|basic|func|test)'
