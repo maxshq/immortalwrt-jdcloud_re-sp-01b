@@ -129,10 +129,11 @@ jobs:
         
     - name: Load Custom Feeds
       run: |
-        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
-        chmod +x $DIY_P1_SH
-        cd openwrt
-        $GITHUB_WORKSPACE/$DIY_P1_SH
+      #  [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
+      #  chmod +x $DIY_P1_SH
+      #  cd openwrt
+      #  $GITHUB_WORKSPACE/$DIY_P1_SH
+      
 
     - name: Update Feeds
       run: cd openwrt && ./scripts/feeds update -a
@@ -142,15 +143,15 @@ jobs:
 
     - name: Load Custom Configuration
       run: |
-        [ -e files ] && echo '::notice title=Image Type:: 已启用files大法！' && mv -v files openwrt/files
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x "$DIY_P2_SH"
-        cd openwrt
-        # 使用脚本生成配置
-        "$GITHUB_WORKSPACE/$DIY_P2_SH" ${{ inputs.config_tag }}
-        echo ==============.config===============
-        [ -e .config ] && cat .config || echo 'No .config after custom configuration'
-        echo ====================================
+      #  [ -e files ] && echo '::notice title=Image Type:: 已启用files大法！' && mv -v files openwrt/files
+      #  [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+      #  chmod +x "$DIY_P2_SH"
+      #  cd openwrt
+      #  # 使用脚本生成配置
+      #  "$GITHUB_WORKSPACE/$DIY_P2_SH" ${{ inputs.config_tag }}
+      #  echo ==============.config===============
+      #  [ -e .config ] && cat .config || echo 'No .config after custom configuration'
+      #  echo ====================================
 
     - name: Download Packages
       id: download
@@ -158,12 +159,13 @@ jobs:
         cd openwrt
         make defconfig
         # 从DIY_P2_SH中截取型号信息
-        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
-        [ -s DEVICE_NAME ] && echo "::notice title=Device@.config:: $(cat DEVICE_NAME)" && echo "DEVICE_NAME=$(cat DEVICE_NAME)" >> $GITHUB_ENV
-        echo ============diff.config=============
-        ./scripts/diffconfig.sh
+   #     grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+   #     [ -s DEVICE_NAME ] && echo "::notice title=Device@.config:: $(cat DEVICE_NAME)" && echo "DEVICE_NAME=$(cat DEVICE_NAME)" >> $GITHUB_ENV
+   #    echo ============diff.config=============
+   #     ./scripts/diffconfig.sh
         echo ====================================
-
+        cp $GITHUB_WORKSPACE/.config .
+        cat .config
         # 下载包，如若出错生成警告
         # 一轮八线程
         make download -j8 | tee make_download.log
