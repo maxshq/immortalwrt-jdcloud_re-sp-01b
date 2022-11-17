@@ -49,7 +49,7 @@ case $1 in
         ;;
     6)
         DEVICE_TAG="OpenWrt - RE-SP-01B"
-        REPO_USE=xiaoxifu64/immortalwrt
+        REPO_USE=xiaoxifu64/lede
         REPO_BRANCH=master
         COMMIT_SHA=latest
         DIY_P2_SH="diy-part2/[immortalwrt]RE-SP-01B-part2.sh"
