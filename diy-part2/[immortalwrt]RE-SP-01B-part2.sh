@@ -23,24 +23,24 @@ mod_default_config(){
     #=========================================
 
     # C1
-    echo '修改后台地址为 192.168.199.1'
-    sed -i 's/192.168.1.1/192.168.199.1/g' package/base-files/files/bin/config_generate
+    #echo '修改后台地址为 192.168.199.1'
+    #sed -i 's/192.168.1.1/192.168.199.1/g' package/base-files/files/bin/config_generate
 
-    echo '修改时区为东八区'
-    sed -i "s/'UTC'/'CST-8'\n        set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
+    #echo '修改时区为东八区'
+    #sed -i "s/'UTC'/'CST-8'\n        set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
 
-    echo '修改主机名为 JDC_Mark1'
-    sed -i 's/OpenWrt/JDC_Mark1/g' package/base-files/files/bin/config_generate
+    #echo '修改主机名为 JDC_Mark1'
+    #sed -i 's/OpenWrt/JDC_Mark1/g' package/base-files/files/bin/config_generate
 
     # C2
-    echo '修改默认主题为老竭力的 argon'
+    #echo '修改默认主题为老竭力的 argon'
     # sed -i 's/luci-theme-bootstrap/luci-theme-argonne/g' feeds/luci/collections/luci*/Makefile
-    sed -i 's/bootstrap/argon/g' feeds/luci/modules/luci-base/root/etc/config/luci
+    #sed -i 's/bootstrap/argon/g' feeds/luci/modules/luci-base/root/etc/config/luci
 
     # C3
-    echo '添加 OpenWrt 默认设置文件'
-    mkdir -p files/etc/uci-defaults
-    cp -v "$sh_dir/[OpenWrt]CustomDefault.sh" files/etc/uci-defaults/99-Custom-Default
+    #echo '添加 OpenWrt 默认设置文件'
+    #mkdir -p files/etc/uci-defaults
+    #cp -v "$sh_dir/[OpenWrt]CustomDefault.sh" files/etc/uci-defaults/99-Custom-Default
 }
 
 target_inf() {
@@ -51,22 +51,22 @@ target_inf() {
     #=========================================
 
     # load dts
-    echo '载入 mt7621_jdcloud_re-sp-01b.dts'
-    curl --retry 3 -s --globoff "https://gist.githubusercontent.com/1-1-2/335dbc8e138f39fb8fe6243d424fe476/raw/[openwrt]mt7621_jdcloud_re-sp-01b.dts" -o target/linux/ramips/dts/mt7621_jdcloud_re-sp-01b.dts
-    ls -l target/linux/ramips/dts/mt7621_jdcloud_re-sp-01b.dts
+    #echo '载入 mt7621_jdcloud_re-sp-01b.dts'
+    #curl --retry 3 -s --globoff "https://gist.githubusercontent.com/1-1-2/335dbc8e138f39fb8fe6243d424fe476/raw/[openwrt]mt7621_jdcloud_re-sp-01b.dts" -o target/linux/ramips/dts/mt7621_jdcloud_re-sp-01b.dts
+    #ls -l target/linux/ramips/dts/mt7621_jdcloud_re-sp-01b.dts
 
     # fix2 + fix4.2
-    echo '修补 mt7621.mk'
-    sed -i '/Device\/adslr_g7/i\define Device\/jdcloud_re-sp-01b\n  \$(Device\/dsa-migration)\n  \$(Device\/uimage-lzma-loader)\n  IMAGE_SIZE := 32448k\n  DEVICE_VENDOR := JDCloud\n  DEVICE_MODEL := RE-SP-01B\n  DEVICE_PACKAGES := kmod-fs-ext4 kmod-mt7603 kmod-mt7615e kmod-mt7615-firmware kmod-sdhci-mt7620 kmod-usb3 wpad-openssl\nendef\nTARGET_DEVICES += jdcloud_re-sp-01b\n\n' target/linux/ramips/image/mt7621.mk
+    #echo '修补 mt7621.mk'
+    #sed -i '/Device\/adslr_g7/i\define Device\/jdcloud_re-sp-01b\n  \$(Device\/dsa-migration)\n  \$(Device\/uimage-lzma-loader)\n  IMAGE_SIZE := 32448k\n  DEVICE_VENDOR := JDCloud\n  DEVICE_MODEL := RE-SP-01B\n  DEVICE_PACKAGES := kmod-fs-ext4 kmod-mt7603 kmod-mt7615e kmod-mt7615-firmware kmod-sdhci-mt7620 kmod-usb3 wpad-openssl\nendef\nTARGET_DEVICES += jdcloud_re-sp-01b\n\n' target/linux/ramips/image/mt7621.mk
 
     # fix3 + fix5.2
-    echo '修补 02-network'
-    sed -i -e '/lenovo,newifi-d1|\\/i\        jdcloud,re-sp-01b|\\' -e '/ramips_setup_macs/,/}/{/ampedwireless,ally-00x19k/i\        jdcloud,re-sp-01b)\n\t\tlan_mac=$(mtd_get_mac_ascii u-boot-env mac)\n\t\twan_mac=$(macaddr_add "$lan_mac" 1)\n\t\tlabel_mac=$lan_mac\n\t\t;;
-    }' target/linux/ramips/mt7621/base-files/etc/board.d/02_network
+    #echo '修补 02-network'
+    #sed -i -e '/lenovo,newifi-d1|\\/i\        jdcloud,re-sp-01b|\\' -e '/ramips_setup_macs/,/}/{/ampedwireless,ally-00x19k/i\        jdcloud,re-sp-01b)\n\t\tlan_mac=$(mtd_get_mac_ascii u-boot-env mac)\n\t\twan_mac=$(macaddr_add "$lan_mac" 1)\n\t\tlabel_mac=$lan_mac\n\t\t;;
+    #}' target/linux/ramips/mt7621/base-files/etc/board.d/02_network
 
     # fix5.1
-    echo '修补 system.sh 以正常读写 MAC'
-    sed -i 's#key"'\''=//p'\''#& \| head -n1#' package/base-files/files/lib/functions/system.sh
+    #echo '修补 system.sh 以正常读写 MAC'
+    #sed -i 's#key"'\''=//p'\''#& \| head -n1#' package/base-files/files/lib/functions/system.sh
 
     #=========================================
     # Target System
